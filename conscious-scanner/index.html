@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags for character encoding and mobile compatibility -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>INCI-Safe — Scan & Check</title>
+  <!-- Preconnect for faster CDN access -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <!-- Main stylesheet includes mobile-friendly styles (see style.css) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header section with logo, title, and main actions -->
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <!-- Logo SVG -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2l3 6 6 .9-4.5 4.3 1 6.8L12 17l-5.5 3 1-6.8L3 8.9 9 8l3-6z"
+                stroke="#34d399" stroke-width="1.2" fill="none"/>
+        </svg>
+        <h1>INCI-Safe</h1>
+        <small class="muted">Scan personal-care products for ingredient flags & legal notices</small>
+      </div>
+      <div class="actions">
+        <!-- Camera scan and manual lookup controls -->
+        <button id="startScan" class="primary">📷 Start Camera Scan</button>
+        <button id="stopScan">⏹️ Stop</button>
+        <input id="manualCode" type="text" inputmode="numeric" placeholder="Enter UPC/EAN" />
+        <button id="lookup">🔎 Lookup</button>
+        <button id="clearHistory">🧹 Clear History</button>
+        <button id="clearProducts">🗑️ Reset Products</button>
+        <button id="importBtn">📥 Import CSV/JSON</button>
+        <button id="exportBtn">📤 Export JSON</button>
+        <input id="filePicker" type="file" accept=".csv,.json" style="display:none" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content area: scanner and sidebar -->
+  <main class="wrap grid">
+    <section class="card">
+      <!-- Scanner viewport for barcode scanning -->
+      <div class="scanner" id="scannerViewport">
+        <div class="scanline" aria-hidden="true"></div>
+      </div>
+      <!-- Scan result output -->
+      <div id="result" class="list" style="margin-top:14px"></div>
+    </section>
+
+    <aside class="card">
+      <h3 style="margin-top:0">Recent scans</h3>
+      <div id="history"></div>
+      <hr class="rule-sep">
+      <h3 style="margin-top:0">Flag rules</h3>
+      <p class="muted">These simple patterns highlight potentially concerning ingredients. You can add your own.</p>
+      <div id="rules" class="list"></div>
+      <div class="row">
+        <input id="newRule" type="text" placeholder="e.g., butylated hydroxyanisole" />
+        <button id="addRule">➕ Add Rule</button>
+      </div>
+    </aside>
+    <div id="importSummary" class="muted" style="margin-top:8px;"></div>
+  </main>
+
+  <!-- Footer disclaimer -->
+  <footer class="wrap footnote" style="margin:24px 0">
+    <p>⚠️ Informational only. Not medical or legal advice. Ingredient names vary; always check packaging.</p>
+  </footer>
+
+  <!-- QuaggaJS (barcode scanner library) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Main JavaScript logic -->
+  <script src="script.js"></script>
+</body>
+</html>

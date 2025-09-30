@@ -1,0 +1,92 @@
+[
+  {
+    "upc": "012345678905",
+    "name": "HydraShine Shampoo",
+    "brand": "Riverglow",
+    "category": "Hair Care",
+    "ingredients": ["Water", "Sodium Laureth Sulfate", "Fragrance", "Methylparaben", "Citric Acid"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "036000291452",
+    "name": "Daily Calm Face Moisturizer SPF 30",
+    "brand": "Everdew",
+    "category": "Skin Care",
+    "ingredients": ["Water", "Glycerin", "Oxybenzone", "Dimethicone"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "490000567890",
+    "name": "SilkGuard Heat Serum",
+    "brand": "ThermaLux",
+    "category": "Hair Styling",
+    "ingredients": ["Cyclopentasiloxane", "Dimethiconol", "Fragrance"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "9501101530003",
+    "name": "PureBloom Night Cream",
+    "brand": "Bloomery",
+    "category": "Skin Care",
+    "ingredients": ["Water", "Squalane", "Niacinamide", "Shea Butter"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "0001234567890",
+    "name": "Garnier Fructis Sleek & Shine Shampoo",
+    "brand": "Garnier",
+    "category": "Hair Care",
+    "ingredients": ["Water", "Sodium Laureth Sulfate", "Dimethicone", "Fragrance"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "0001234567891",
+    "name": "Garnier Fructis Sleek & Shine Conditioner",
+    "brand": "Garnier",
+    "category": "Hair Care",
+    "ingredients": ["Water", "Cetearyl Alcohol", "Behentrimonium Chloride", "Fragrance"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "0002234567890",
+    "name": "Suave Essentials Tropical Coconut Shampoo",
+    "brand": "Suave",
+    "category": "Hair Care",
+    "ingredients": ["Water", "Sodium Laureth Sulfate", "Cocamidopropyl Betaine", "Fragrance"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "0002234567891",
+    "name": "Suave Silk Protein Infusion Sleek & Smooth Conditioner",
+    "brand": "Suave",
+    "category": "Hair Care",
+    "ingredients": ["Water", "Behentrimonium Chloride", "Silk Protein", "Fragrance"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "10239702138",
+    "name": "Native Dunkin Moisturizing Shampoo Sulfate-Free Strawberry Frosted 16.5 oz",
+    "brand": "Native",
+    "category": "Hair Care",
+    "ingredients": ["Water", "Cocamidopropyl Betaine", "Sodium Cocoyl Isethionate", "Strawberry Extract", "Fragrance"],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "0003234567890",
+    "name": "Suave Wild Cherry Blossom Body Wash",
+    "brand": "Suave",
+    "category": "Body Care",
+    "ingredients": ["Water", "Sodium Laureth Sulfate", "Fragrance", "Cocamide DEA"],
+    "notices": [],
+    "lawsuits": []
+  }
+]

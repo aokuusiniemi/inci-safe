@@ -1,0 +1,12 @@
+{
+  "Pantene Shampoo": {
+    "ingredients": ["Sulfates", "Fragrance"],
+    "dangerous": true,
+    "lawsuits": ["2019 - Hair loss claim"]
+  },
+  "Aveeno Lotion": {
+    "ingredients": ["Water", "Oatmeal", "Glycerin"],
+    "dangerous": false,
+    "lawsuits": []
+  }
+}
