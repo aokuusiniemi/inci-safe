@@ -1,0 +1,268 @@
+{
+  "Fragrance": {
+    "aliases": ["Parfum", "Fragrance (Parfum)"],
+    "definition": "Mixture of aromatic compounds used to add scent; exact composition is often undisclosed.",
+    "commonUses": "Shampoos, lotions, body wash, deodorants",
+    "concerns": "Possible allergens/sensitizers; vague labeling.",
+    "sources": []
+  },
+  "Cocamidopropyl Betaine": {
+    "aliases": ["CAPB"],
+    "definition": "Amphoteric surfactant/foaming agent derived from coconut oil.",
+    "commonUses": "Shampoos, facial cleansers, body wash",
+    "concerns": "Irritation possible for sensitive skin.",
+    "sources": []
+  },
+  "Sodium Cocoyl Isethionate": {
+    "aliases": [],
+    "definition": "Mild anionic surfactant made from coconut fatty acids.",
+    "commonUses": "Sulfate-free shampoos and cleansers",
+    "concerns": "Generally mild; irritation at high concentrations.",
+    "sources": []
+  },
+  "Sodium Laureth Sulfate": {
+    "aliases": ["SLES"],
+    "definition": "Anionic surfactant/cleanser that creates rich lather.",
+    "commonUses": "Shampoos, body wash, cleansers",
+    "concerns": "Can be drying/irritating in some users.",
+    "sources": []
+  },
+  "Sodium Lauryl Sulfate": {
+    "aliases": ["SLS"],
+    "definition": "Strong anionic surfactant and foaming agent.",
+    "commonUses": "Toothpaste, cleansers, shampoos",
+    "concerns": "More irritating than SLES for many people.",
+    "sources": []
+  },
+  "Dimethicone": {
+    "aliases": [],
+    "definition": "Silicone polymer that forms a smooth protective film.",
+    "commonUses": "Conditioners, primers, lotions",
+    "concerns": "Build-up for some hair types; generally low irritation.",
+    "sources": []
+  },
+  "Cyclopentasiloxane": {
+    "aliases": ["D5"],
+    "definition": "Volatile silicone that gives slip and quick-dry feel.",
+    "commonUses": "Hair serums, deodorants, primers",
+    "concerns": "Build-up concerns; environmental persistence debated.",
+    "sources": []
+  },
+  "Dimethiconol": {
+    "aliases": [],
+    "definition": "High-molecular-weight silicone; conditioning and shine.",
+    "commonUses": "Hair serums, conditioners",
+    "concerns": "Build-up on hair; generally low irritation.",
+    "sources": []
+  },
+  "Behentrimonium Chloride": {
+    "aliases": ["BTAC-228"],
+    "definition": "Cationic conditioning agent; detangling and softening.",
+    "commonUses": "Conditioners, masks",
+    "concerns": "Irritation possible if left on scalp for long periods.",
+    "sources": []
+  },
+  "Behentrimonium Methosulfate": {
+    "aliases": ["BTMS"],
+    "definition": "Conditioning emulsifier; excellent detangling.",
+    "commonUses": "Conditioners, leave-ins",
+    "concerns": "Generally well tolerated; concentration dependent.",
+    "sources": []
+  },
+  "Cetyl Alcohol": {
+    "aliases": [],
+    "definition": "Fatty alcohol that thickens and softens.",
+    "commonUses": "Conditioners, creams",
+    "concerns": "Generally safe; not a drying alcohol.",
+    "sources": []
+  },
+  "Cetearyl Alcohol": {
+    "aliases": [],
+    "definition": "Blend of cetyl and stearyl alcohols for slip and body.",
+    "commonUses": "Conditioners, lotions",
+    "concerns": "Low irritation; different from drying alcohols.",
+    "sources": []
+  },
+  "Glycerin": {
+    "aliases": ["Glycerol"],
+    "definition": "Humectant that attracts water to skin/hair.",
+    "commonUses": "Moisturizers, conditioners, cleansers",
+    "concerns": "Sticky feel at high levels.",
+    "sources": []
+  },
+  "Hyaluronic Acid": {
+    "aliases": ["Sodium Hyaluronate"],
+    "definition": "Powerful humectant that binds water.",
+    "commonUses": "Serums, creams, masks",
+    "concerns": "Can feel tacky; low irritation risk.",
+    "sources": []
+  },
+  "Niacinamide": {
+    "aliases": ["Vitamin B3"],
+    "definition": "Multitasker for tone, oil control, and barrier support.",
+    "commonUses": "Serums, moisturizers",
+    "concerns": "Flush in rare cases at high concentration.",
+    "sources": []
+  },
+  "Panthenol": {
+    "aliases": ["Pro-Vitamin B5"],
+    "definition": "Humectant and soothing agent; adds slip to hair.",
+    "commonUses": "Conditioners, lotions",
+    "concerns": "Low irritation potential.",
+    "sources": []
+  },
+  "Allantoin": {
+    "aliases": [],
+    "definition": "Soothing, skin-protective compound.",
+    "commonUses": "Lotions, after-sun, sensitive-skin products",
+    "concerns": "Low irritation potential.",
+    "sources": []
+  },
+  "Shea Butter": {
+    "aliases": ["Butyrospermum Parkii Butter"],
+    "definition": "Emollient fat providing rich occlusion.",
+    "commonUses": "Creams, balms, conditioners",
+    "concerns": "Heavy for fine hair; acne-trigger for some.",
+    "sources": []
+  },
+  "Squalane": {
+    "aliases": [],
+    "definition": "Stable lightweight emollient (often from sugarcane).",
+    "commonUses": "Facial oils, creams, hair serums",
+    "concerns": "Generally well tolerated.",
+    "sources": []
+  },
+  "Phenoxyethanol": {
+    "aliases": [],
+    "definition": "Broad-spectrum preservative.",
+    "commonUses": "Most water-based cosmetics",
+    "concerns": "Irritation for very sensitive individuals.",
+    "sources": []
+  },
+  "Methylparaben": {
+    "aliases": ["Parabens"],
+    "definition": "Preservative class used to inhibit microbial growth.",
+    "commonUses": "Shampoos, lotions, makeup",
+    "concerns": "Debate over endocrine effects; many choose to avoid.",
+    "sources": []
+  },
+  "BHT": {
+    "aliases": ["Butylated Hydroxytoluene"],
+    "definition": "Antioxidant that stabilizes oils and formulas.",
+    "commonUses": "Oils, lip products, creams",
+    "concerns": "Some prefer to avoid due to irritation/tox debates.",
+    "sources": []
+  },
+  "BHA": {
+    "aliases": ["Butylated Hydroxyanisole"],
+    "definition": "Antioxidant preservative.",
+    "commonUses": "Oils, balms",
+    "concerns": "Some consumers choose to avoid.",
+    "sources": []
+  },
+  "Triclosan": {
+    "aliases": [],
+    "definition": "Antibacterial agent.",
+    "commonUses": "Soaps, some pastes (restricted in many regions)",
+    "concerns": "Regulatory restrictions; resistance concerns.",
+    "sources": []
+  },
+  "Oxybenzone": {
+    "aliases": ["Benzophenone-3"],
+    "definition": "Chemical UV filter for broad-spectrum protection.",
+    "commonUses": "Sunscreens, SPF moisturizers",
+    "concerns": "Allergy potential; environmental concerns; often avoided.",
+    "sources": []
+  },
+  "Avobenzone": {
+    "aliases": [],
+    "definition": "UVA chemical filter; needs stabilizers.",
+    "commonUses": "Sunscreens",
+    "concerns": "Can degrade without stabilizers; eye sting for some.",
+    "sources": []
+  },
+  "Octocrylene": {
+    "aliases": [],
+    "definition": "UVB filter; stabilizes avobenzone.",
+    "commonUses": "Sunscreens, SPF products",
+    "concerns": "Allergy potential for a subset of users.",
+    "sources": []
+  },
+  "Homosalate": {
+    "aliases": [],
+    "definition": "UVB filter for sunscreens.",
+    "commonUses": "Sunscreens",
+    "concerns": "Regulatory review in some regions; personal preference.",
+    "sources": []
+  },
+  "Zinc Oxide": {
+    "aliases": [],
+    "definition": "Mineral UV filter; broad-spectrum and photostable.",
+    "commonUses": "Mineral sunscreens, diaper creams",
+    "concerns": "White cast; nanoparticles are debated.",
+    "sources": []
+  },
+  "Titanium Dioxide": {
+    "aliases": [],
+    "definition": "Mineral UV filter; brightening pigment.",
+    "commonUses": "Sunscreens, makeup",
+    "concerns": "White cast; inhalation concerns for loose powders.",
+    "sources": []
+  },
+  "Quaternium-15": {
+    "aliases": [],
+    "definition": "Preservative that can release small amounts of formaldehyde.",
+    "commonUses": "Shampoos, conditioners, lotions",
+    "concerns": "Formaldehyde releaser; allergy risk.",
+    "sources": []
+  },
+  "DMDM Hydantoin": {
+    "aliases": [],
+    "definition": "Preservative; formaldehyde releaser.",
+    "commonUses": "Shampoos, conditioners",
+    "concerns": "Formaldehyde release; sensitivity for some.",
+    "sources": []
+  },
+  "Imidazolidinyl Urea": {
+    "aliases": [],
+    "definition": "Preservative that can release formaldehyde.",
+    "commonUses": "Creams, lotions",
+    "concerns": "Allergy risk for sensitive users.",
+    "sources": []
+  },
+  "Diazolidinyl Urea": {
+    "aliases": [],
+    "definition": "Preservative; potential formaldehyde releaser.",
+    "commonUses": "Lotions, creams",
+    "concerns": "Allergen potential.",
+    "sources": []
+  },
+  "Polyquaternium-11": {
+    "aliases": [],
+    "definition": "Film-forming polymer for hold and gloss.",
+    "commonUses": "Hair gels, mousses, sprays",
+    "concerns": "Build-up; generally low irritation.",
+    "sources": []
+  },
+  "Alcohol Denat.": {
+    "aliases": ["Denatured Alcohol", "SD Alcohol"],
+    "definition": "Volatile solvent; quick-dry feel.",
+    "commonUses": "Sprays, gels, toners",
+    "concerns": "Drying/irritating on skin/hair in higher amounts.",
+    "sources": []
+  },
+  "Limonene": {
+    "aliases": [],
+    "definition": "Fragrance terpene with citrus scent.",
+    "commonUses": "Fragranced products",
+    "concerns": "Allergen potential; oxidizes on air exposure.",
+    "sources": []
+  },
+  "Linalool": {
+    "aliases": [],
+    "definition": "Fragrance terpene with floral scent.",
+    "commonUses": "Fragranced products",
+    "concerns": "Allergen potential for some users.",
+    "sources": []
+  }
+}

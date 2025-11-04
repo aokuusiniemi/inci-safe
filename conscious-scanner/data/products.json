@@ -1,12 +1,588 @@
-{
-  "Pantene Shampoo": {
-    "ingredients": ["Sulfates", "Fragrance"],
-    "dangerous": true,
-    "lawsuits": ["2019 - Hair loss claim"]
+[
+  {
+    "upc": "012345678905",
+    "name": "HydraShine Shampoo",
+    "brand": "Riverglow",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Fragrance",
+      "Methylparaben",
+      "Citric Acid"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": ""
   },
-  "Aveeno Lotion": {
-    "ingredients": ["Water", "Oatmeal", "Glycerin"],
-    "dangerous": false,
+  {
+    "upc": "036000291452",
+    "name": "Daily Calm Face Moisturizer SPF 30",
+    "brand": "Everdew",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Glycerin",
+      "Oxybenzone",
+      "Dimethicone"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": ""
+  },
+  {
+    "upc": "490000567890",
+    "name": "SilkGuard Heat Serum",
+    "brand": "ThermaLux",
+    "category": "Hair Styling",
+    "ingredients": [
+      "Cyclopentasiloxane",
+      "Dimethiconol",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": ""
+  },
+  {
+    "upc": "9501101530003",
+    "name": "PureBloom Night Cream",
+    "brand": "Bloomery",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Squalane",
+      "Niacinamide",
+      "Shea Butter"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": ""
+  },
+  {
+    "upc": "0001234567890",
+    "name": "Garnier Fructis Sleek & Shine Shampoo",
+    "brand": "Garnier",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Dimethicone",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": "https://example.org/image.jpg"
+  },
+  {
+    "upc": "0001234567891",
+    "name": "Garnier Fructis Sleek & Shine Conditioner",
+    "brand": "Garnier",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Cetearyl Alcohol",
+      "Behentrimonium Chloride",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": "https://target.scene7.com/is/image/Target/GUEST_9a471bb3-71b4-41cd-bfb1-62baf2721026?wid=1200&hei=1200&qlt=80&fmt=webp"
+  },
+  {
+    "upc": "0002234567890",
+    "name": "Suave Essentials Tropical Coconut Shampoo",
+    "brand": "Suave",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Cocamidopropyl Betaine",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": "https://www.suave.com/cdn/shop/files/65699334-079400495976-01.png.rendition.767.767.png?v=1698338830"
+  },
+  {
+    "upc": "0002234567891",
+    "name": "Suave Silk Protein Infusion Sleek & Smooth Conditioner",
+    "brand": "Suave",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Behentrimonium Chloride",
+      "Silk Protein",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": ""
+  },
+  {
+    "upc": "10239702138",
+    "name": "Native Dunkin Moisturizing Shampoo Sulfate-Free Strawberry Frosted 16.5 oz",
+    "brand": "Native",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Cocamidopropyl Betaine",
+      "Sodium Cocoyl Isethionate",
+      "Strawberry Extract",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": ""
+  },
+  {
+    "upc": "0003234567890",
+    "name": "Suave Wild Cherry Blossom Body Wash",
+    "brand": "Suave",
+    "category": "Body Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Fragrance",
+      "Cocamide DEA"
+    ],
+    "notices": [],
+    "lawsuits": [],
+    "image": ""
+  },
+  {
+    "upc": "011111111111",
+    "name": "Clarifying Shampoo",
+    "brand": "FoamLab",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Fragrance",
+      "BHT"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "022222222222",
+    "name": "Mineral SPF 30",
+    "brand": "SunKind",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Zinc Oxide",
+      "Glycerin",
+      "Fragrance"
+    ],
+    "notices": [
+      {
+        "type": "notice",
+        "status": "current",
+        "date": "2025-05-01",
+        "title": "Label update",
+        "source": "https://example.org/notice"
+      }
+    ],
+    "lawsuits": []
+  },
+  {
+    "upc": "033333333333",
+    "name": "Keratin Serum",
+    "brand": "SleekCo",
+    "image": "",
+    "category": "Hair Styling",
+    "ingredients": [
+      "Cyclopentasiloxane",
+      "Dimethiconol",
+      "Quaternium-15",
+      "Limonene"
+    ],
+    "notices": [],
+    "lawsuits": [
+      {
+        "status": "filed",
+        "date": "2024-11-20",
+        "title": "Allergen claim",
+        "source": "https://example.org/case"
+      }
+    ]
+  },
+  {
+    "upc": "044444444444",
+    "name": "Organic Face Cream",
+    "brand": "NatureGlow",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Aqua",
+      "Cetearyl Alcohol",
+      "Shea Butter",
+      "Lavandula Angustifolia Oil"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "055555555555",
+    "name": "Volumizing Mousse",
+    "brand": "BigHair",
+    "image": "",
+    "category": "Hair Styling",
+    "ingredients": [
+      "Water",
+      "Polyquaternium-11",
+      "Fragrance",
+      "Citral"
+    ],
+    "notices": [
+      {
+        "type": "recall",
+        "status": "current",
+        "date": "2024-12-15",
+        "title": "Microbial contamination",
+        "source": "https://example.org/recall"
+      }
+    ],
+    "lawsuits": []
+  },
+  {
+    "upc": "066666666666",
+    "name": "Hydrating Toner",
+    "brand": "FreshFace",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Glycerin",
+      "Witch Hazel",
+      "Rosa Damascena Flower Water"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "077777777777",
+    "name": "Anti-Dandruff Shampoo",
+    "brand": "ScalpCare",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Pyrithione Zinc",
+      "Sodium Laureth Sulfate",
+      "Fragrance",
+      "Menthol"
+    ],
+    "notices": [],
+    "lawsuits": [
+      {
+        "status": "settled",
+        "date": "2023-08-30",
+        "title": "False advertising",
+        "source": "https://example.org/case"
+      }
+    ]
+  },
+  {
+    "upc": "088888888888",
+    "name": "Leave-In Conditioner",
+    "brand": "SoftLocks",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Cetearyl Alcohol",
+      "Behentrimonium Chloride",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "099999999999",
+    "name": "SPF 50 Sunscreen",
+    "brand": "UltraShield",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Homosalate",
+      "Octocrylene",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "100000000000",
+    "name": "Texturizing Spray",
+    "brand": "StylePro",
+    "image": "",
+    "category": "Hair Styling",
+    "ingredients": [
+      "Water",
+      "Alcohol Denat.",
+      "VP/VA Copolymer",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "111111111111",
+    "name": "Soothing After-Sun Lotion",
+    "brand": "CoolSkin",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Aloe Barbadensis Leaf Juice",
+      "Glycerin",
+      "Panthenol",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "122222222222",
+    "name": "Color Protect Shampoo",
+    "brand": "ColorSafe",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Cocamidopropyl Betaine",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "133333333333",
+    "name": "Deep Conditioning Mask",
+    "brand": "HydraHair",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Cetearyl Alcohol",
+      "Behentrimonium Methosulfate",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "144444444444",
+    "name": "Facial Cleanser",
+    "brand": "GentleGlow",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Sodium Lauroyl Sarcosinate",
+      "Glycerin",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "155555555555",
+    "name": "Hair Growth Serum",
+    "brand": "ThickLocks",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Biotin",
+      "Caffeine",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "166666666666",
+    "name": "Mattifying Moisturizer",
+    "brand": "ClearSkin",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Dimethicone",
+      "Glycerin",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "177777777777",
+    "name": "Curl Defining Cream",
+    "brand": "CurlMagic",
+    "image": "",
+    "category": "Hair Styling",
+    "ingredients": [
+      "Water",
+      "Cetearyl Alcohol",
+      "Behentrimonium Chloride",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "188888888888",
+    "name": "Anti-Aging Serum",
+    "brand": "YouthfulGlow",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Hyaluronic Acid",
+      "Retinol",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "199999999999",
+    "name": "Heat Protectant Spray",
+    "brand": "SafeStyle",
+    "image": "",
+    "category": "Hair Styling",
+    "ingredients": [
+      "Water",
+      "Cyclopentasiloxane",
+      "Dimethiconol",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "200000000000",
+    "name": "Detangling Spray",
+    "brand": "EzyComb",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Glycerin",
+      "Panthenol",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "211111111111",
+    "name": "Exfoliating Scrub",
+    "brand": "SmoothSkin",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Jojoba Beads",
+      "Glycerin",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "222222222222",
+    "name": "Volumizing Shampoo",
+    "brand": "BigVolume",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Fragrance",
+      "Citral"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "233333333333",
+    "name": "Hydrating Serum",
+    "brand": "MoistureBoost",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Hyaluronic Acid",
+      "Glycerin",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "244444444444",
+    "name": "Texturizing Paste",
+    "brand": "StyleFix",
+    "image": "",
+    "category": "Hair Styling",
+    "ingredients": [
+      "Water",
+      "Alcohol Denat.",
+      "VP/VA Copolymer",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "255555555555",
+    "name": "Clarifying Conditioner",
+    "brand": "FoamLab",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Water",
+      "Sodium Laureth Sulfate",
+      "Fragrance",
+      "BHT"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "266666666666",
+    "name": "SPF 15 Daily Moisturizer",
+    "brand": "SunKind",
+    "image": "",
+    "category": "Skin Care",
+    "ingredients": [
+      "Water",
+      "Zinc Oxide",
+      "Glycerin",
+      "Fragrance"
+    ],
+    "notices": [],
+    "lawsuits": []
+  },
+  {
+    "upc": "277777777777",
+    "name": "Keratin Hair Mask",
+    "brand": "SleekCo",
+    "image": "",
+    "category": "Hair Care",
+    "ingredients": [
+      "Cyclopentasiloxane",
+      "Dimethiconol",
+      "Quaternium-15",
+      "Limonene"
+    ],
+    "notices": [],
     "lawsuits": []
   }
-}
+]

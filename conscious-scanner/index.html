@@ -21,20 +21,28 @@
                 stroke="#34d399" stroke-width="1.2" fill="none"/>
         </svg>
         <h1>INCI-Safe</h1>
-        <small class="muted">Scan personal-care products for ingredient flags & legal notices</small>
+        <p class="muted">Scan personal-care products for ingredient flags & legal notices</p>
       </div>
       <div class="actions">
-        <!-- Camera scan and manual lookup controls -->
-        <button id="startScan" class="primary">📷 Start Camera Scan</button>
-        <button id="stopScan">⏹️ Stop</button>
-        <input id="manualCode" type="text" inputmode="numeric" placeholder="Enter UPC/EAN" />
-        <button id="lookup">🔎 Lookup</button>
-        <button id="clearHistory">🧹 Clear History</button>
-        <button id="clearProducts">🗑️ Reset Products</button>
-        <button id="importBtn">📥 Import CSV/JSON</button>
-        <button id="exportBtn">📤 Export JSON</button>
-        <input id="filePicker" type="file" accept=".csv,.json" style="display:none" />
-      </div>
+  <button id="startScan" class="primary">📷 Start Camera Scan</button>
+  <button id="stopScan">⏹️ Stop</button>
+  <input id="manualCode" type="text" inputmode="numeric" placeholder="Enter UPC/EAN" />
+  <button id="lookup">🔎 Lookup</button>
+
+  <details class="more">
+    <summary>More ▾</summary>
+    <div class="more-menu">
+      <button id="clearHistory">🧹 Clear History</button>
+      <button id="clearProducts">🗑️ Reset Products</button>
+      <button id="importBtn">📥 Import CSV/JSON</button>
+      <button id="exportBtn">📤 Export JSON</button>
+      <button id="validateDataTop">🧪 Validate Data</button>
+      <button id="normalizeDataTop">🧹 Normalize</button>
+    </div>
+  </details>
+
+  <input id="filePicker" type="file" accept=".csv,.json" style="display:none" />
+</div>
     </div>
   </header>
 
@@ -50,16 +58,47 @@
     </section>
 
     <aside class="card">
-      <h3 style="margin-top:0">Recent scans</h3>
-      <div id="history"></div>
-      <hr class="rule-sep">
-      <h3 style="margin-top:0">Flag rules</h3>
-      <p class="muted">These simple patterns highlight potentially concerning ingredients. You can add your own.</p>
-      <div id="rules" class="list"></div>
-      <div class="row">
-        <input id="newRule" type="text" placeholder="e.g., butylated hydroxyanisole" />
-        <button id="addRule">➕ Add Rule</button>
-      </div>
+      <h3 style="margin-top:0">Panel</h3>
+
+<div class="tabs">
+  <button class="tab active" data-tab="recent">Recent</button>
+  <button class="tab" data-tab="rules">Rules</button>
+  <button class="tab" data-tab="glossary">Glossary</button>
+  <button class="tab" data-tab="data">Data</button>
+</div>
+
+<div class="tabpanes">
+  <div class="tabpane active" id="tab-recent">
+    <p class="muted">Click an item to re-check ingredients against current rules.</p>
+    <div id="history"></div>
+  </div>
+
+  <div class="tabpane" id="tab-rules">
+    <p class="muted">These simple patterns highlight potentially concerning ingredients. You can add your own.</p>
+    <div id="rules" class="list"></div>
+    <div class="row">
+      <input id="newRule" type="text" placeholder="e.g., butylated hydroxyanisole" />
+      <button id="addRule">➕ Add Rule</button>
+    </div>
+  </div>
+
+  <div class="tabpane" id="tab-glossary">
+    <div class="row">
+      <input id="glossSearch" type="text" placeholder="Search ingredient…" />
+      <button id="glossClear">Clear</button>
+    </div>
+    <div id="glossaryPanel" class="list" style="margin-top:8px"></div>
+  </div>
+
+  <div class="tabpane" id="tab-data">
+    <div id="dataReport" class="muted"></div>
+    <div class="row" style="margin-top:10px">
+      <button id="validateData">🧪 Validate Data</button>
+      <button id="normalizeData">🧹 Normalize</button>
+    </div>
+  </div>
+</div>
+
     </aside>
     <div id="importSummary" class="muted" style="margin-top:8px;"></div>
   </main>
