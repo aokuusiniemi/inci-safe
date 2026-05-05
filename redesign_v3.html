@@ -1,0 +1,1502 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>INCI-Safe — Redesign Preview</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-deep: #07121b;
+      --bg: #0b1520;
+      --card: #111c29;
+      --card-raised: #16243a;
+      --ink: #e7f0f8;
+      --ink-soft: #c5d2e1;
+      --muted: #8090a3;
+      --line: #1c3149;
+      --line-soft: #14253a;
+
+      --ok: #22c55e;
+      --ok-bg: rgba(34,197,94,.12);
+      --warn: #f59e0b;
+      --warn-bg: rgba(245,158,11,.12);
+      --bad: #ef4444;
+      --bad-bg: rgba(239,68,68,.14);
+      --unknown: #6b7a8e;
+      --unknown-bg: rgba(107,122,142,.14);
+
+      --accent: #34d399;
+      --contested: #c084fc;
+      --contested-bg: rgba(192,132,252,.14);
+
+      --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+      --body: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--body);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 700px at 80% -20%, rgba(52,211,153,.07), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(125,211,252,.05), transparent 60%),
+        linear-gradient(180deg, var(--bg-deep), var(--bg));
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 980px; margin: 0 auto; padding: 28px 20px 80px; }
+
+    /* ---- Header ---- */
+    header.brand { display: flex; align-items: baseline; gap: 14px; margin-bottom: 32px; }
+    header.brand h1 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-variation-settings: 'opsz' 144, 'SOFT' 30;
+      font-size: 2rem;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+    header.brand h1 em {
+      font-style: italic;
+      color: var(--accent);
+      font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    }
+    header.brand .tag {
+      color: var(--muted);
+      font-size: 0.92rem;
+      letter-spacing: 0.01em;
+    }
+
+    /* ---- Search ---- */
+    .search { position: relative; margin-bottom: 22px; }
+    .search input {
+      width: 100%;
+      font: inherit;
+      font-size: 1.05rem;
+      color: var(--ink);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 20px 16px 50px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .search input::placeholder { color: var(--muted); }
+    .search input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.12);
+    }
+    .search svg.icon {
+      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+      width: 20px; height: 20px; color: var(--muted); pointer-events: none;
+    }
+    .search-results {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--card-raised);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 5;
+      box-shadow: 0 18px 40px rgba(0,0,0,.4);
+    }
+    .search-results .item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--line-soft);
+      transition: background .12s;
+    }
+    .search-results .item:last-child { border-bottom: none; }
+    .search-results .item:hover, .search-results .item.active { background: rgba(52,211,153,.08); }
+    .search-results .name { font-weight: 500; }
+    .search-results .meta { color: var(--muted); font-size: 0.86rem; margin-top: 2px; }
+
+    /* ---- Filter chips ---- */
+    .filters { margin-bottom: 28px; }
+    .filters .label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .filters .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font: inherit;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--ink); }
+    .chip.on {
+      background: rgba(52,211,153,.12);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .chip.on::before { content: '✓ '; }
+
+    /* ---- Empty state ---- */
+    .empty {
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .empty .hint { font-size: 0.9rem; margin-top: 10px; }
+
+    /* ---- Product card ---- */
+    .product { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .product-header {
+      padding: 26px 28px 22px;
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .product-header h2 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-variation-settings: 'opsz' 144, 'SOFT' 50;
+      font-size: 1.7rem;
+      letter-spacing: -0.015em;
+      margin: 0 0 6px;
+      line-height: 1.2;
+    }
+    .product-header .meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .product-header .meta .dot { margin: 0 8px; opacity: .5; }
+
+    .risk-badge {
+      display: inline-flex; flex-direction: column; align-items: flex-end;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--card-raised);
+      min-width: 130px;
+    }
+    .risk-badge .label { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .risk-badge .value {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin-top: 4px;
+      letter-spacing: -0.01em;
+    }
+    .risk-badge.low .value { color: var(--ok); }
+    .risk-badge.moderate .value { color: var(--warn); }
+    .risk-badge.high .value { color: var(--bad); }
+    .risk-badge .ctx { color: var(--muted); font-size: 0.74rem; margin-top: 6px; text-align: right; max-width: 180px; }
+
+    /* ---- Sections ---- */
+    .section { padding: 22px 28px; border-bottom: 1px solid var(--line-soft); }
+    .section:last-child { border-bottom: none; }
+    .section-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title .count {
+      background: var(--card-raised);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0;
+    }
+
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      font: inherit;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      background: var(--card-raised);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: transform .12s ease, border-color .15s, background .15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill:hover { transform: translateY(-1px); }
+    .pill.green { border-color: rgba(34,197,94,.4); }
+    .pill.yellow { border-color: var(--warn); background: var(--warn-bg); color: var(--warn); }
+    .pill.red { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+    .pill.unknown { border-color: var(--line); background: var(--unknown-bg); color: var(--unknown); border-style: dashed; }
+    .pill.expanded { transform: translateY(-1px); box-shadow: 0 0 0 3px rgba(52,211,153,.18); }
+
+    .pill .dot {
+      width: 6px; height: 6px; border-radius: 50%; display: inline-block;
+    }
+    .pill.green .dot { background: var(--ok); }
+    .pill.yellow .dot { background: var(--warn); }
+    .pill.red .dot { background: var(--bad); }
+    .pill.unknown .dot { background: var(--unknown); }
+
+    .pill .contested-mark {
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: var(--contested-bg);
+      color: var(--contested);
+      border: 1px solid var(--contested);
+      letter-spacing: 0.04em;
+    }
+
+    /* ---- Expanded ingredient detail ---- */
+    .detail {
+      margin-top: 14px;
+      background: var(--card-raised);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      animation: slideDown .18s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .detail h4 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-variation-settings: 'opsz' 144;
+      font-size: 1.15rem;
+      margin: 0 0 4px;
+      letter-spacing: -0.01em;
+    }
+    .detail .alias { color: var(--muted); font-size: 0.86rem; }
+    .detail .function {
+      display: inline-block;
+      margin: 8px 0 14px;
+      padding: 3px 9px;
+      font-size: 0.78rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink-soft);
+    }
+    .detail .definition { color: var(--ink-soft); margin: 0 0 14px; }
+    .detail .why {
+      padding: 12px 14px;
+      border-left: 3px solid var(--warn);
+      background: rgba(245,158,11,.06);
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 14px;
+      font-size: 0.94rem;
+    }
+    .detail .why.red { border-left-color: var(--bad); background: rgba(239,68,68,.06); }
+    .detail .why .why-label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .detail .contested {
+      padding: 12px 14px;
+      border: 1px solid var(--contested);
+      background: var(--contested-bg);
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 0.94rem;
+    }
+    .detail .contested .contested-label {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--contested); display: block; margin-bottom: 4px; font-weight: 500;
+    }
+    .detail .sources {
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line-soft);
+      padding-top: 12px;
+    }
+    .detail .sources strong { color: var(--ink-soft); font-weight: 500; }
+    .detail .sources .source-row { margin-top: 4px; }
+    .detail .sources .side {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 1px 7px;
+      border-radius: 999px;
+      margin-right: 6px;
+    }
+    .detail .sources .side.con { background: var(--warn-bg); color: var(--warn); }
+    .detail .sources .side.pro { background: var(--ok-bg); color: var(--ok); }
+
+    .detail .micro-disclaimer {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line-soft);
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    /* ---- Unknown ingredient CTA ---- */
+    .unknown-cta {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--card-raised);
+      border: 1px dashed var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .unknown-cta .text { color: var(--ink-soft); font-size: 0.92rem; }
+    .unknown-cta .text strong { color: var(--ink); }
+    .unknown-cta button {
+      font: inherit; font-size: 0.88rem;
+      background: var(--accent);
+      color: #052418;
+      border: none;
+      border-radius: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: filter .15s;
+    }
+    .unknown-cta button:hover { filter: brightness(1.08); }
+
+    /* ---- Collapsible (recalls / lawsuits) ---- */
+    details.collapsible {
+      border-top: 1px solid var(--line-soft);
+      padding: 0;
+    }
+    details.collapsible summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 18px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px;
+      transition: background .12s;
+    }
+    details.collapsible summary::-webkit-details-marker { display: none; }
+    details.collapsible summary:hover { background: rgba(52,211,153,.04); }
+    details.collapsible summary .left {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    details.collapsible summary .left .count {
+      background: var(--card-raised);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0;
+    }
+    details.collapsible summary .chev {
+      color: var(--muted);
+      transition: transform .15s ease;
+    }
+    details.collapsible[open] summary .chev { transform: rotate(180deg); }
+    details.collapsible .body { padding: 0 28px 22px; }
+
+    .notice-row {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card-raised);
+      margin-bottom: 10px;
+    }
+    .notice-row:last-child { margin-bottom: 0; }
+    .notice-row .head {
+      display: flex; justify-content: space-between; gap: 14px;
+      align-items: baseline;
+      font-size: 0.94rem;
+    }
+    .notice-row .type {
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-right: 8px;
+    }
+    .notice-row .title { color: var(--ink); font-weight: 500; }
+    .notice-row .when { color: var(--muted); font-size: 0.84rem; }
+    .notice-row a { color: var(--accent); font-size: 0.84rem; text-decoration: none; }
+    .notice-row a:hover { text-decoration: underline; }
+    .none { color: var(--muted); font-size: 0.92rem; padding: 4px 0; }
+
+    /* ---- Footnote ---- */
+    .footnote {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 28px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ---- Modal (request ingredient demo) ---- */
+    .modal-bg {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 50;
+      animation: fadeIn .15s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      max-width: 480px;
+      width: calc(100% - 32px);
+    }
+    .modal h3 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 1.4rem;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    .modal p { color: var(--ink-soft); margin: 0 0 14px; }
+    .modal ul { margin: 0 0 18px; padding-left: 20px; color: var(--ink-soft); font-size: 0.94rem; }
+    .modal ul li { margin-bottom: 4px; }
+    .modal .actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .modal button {
+      font: inherit; font-size: 0.92rem;
+      border-radius: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: var(--card-raised);
+      color: var(--ink);
+    }
+    .modal button.primary {
+      background: var(--accent);
+      color: #052418;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .product-header { flex-direction: column; }
+      .risk-badge { align-self: stretch; align-items: flex-start; }
+      .risk-badge .ctx { text-align: left; }
+      header.brand { flex-direction: column; gap: 4px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="brand">
+      <h1>INCI<em>·</em>Safe</h1>
+      <span class="tag">Know what's on your bottle.</span>
+    </header>
+
+    <div class="search">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="Search products by name, brand, or UPC…" autocomplete="off" />
+      <div id="searchResults" class="search-results" style="display:none"></div>
+    </div>
+
+    <div class="filters">
+      <div class="label">Filter for your skin / hair / life stage</div>
+      <div class="chips" id="filterChips"></div>
+    </div>
+
+    <div id="result"></div>
+
+    <p class="footnote">
+      Informational only. Not medical or legal advice. Ingredient names vary —
+      always check the actual label.
+    </p>
+  </div>
+
+  <script>
+    /* =========================================================
+       PROFILES — these are the filter chips. Pure session state.
+       ========================================================= */
+    const PROFILES = {
+      acne_prone:        { label: "Acne-prone" },
+      oily_skin:         { label: "Oily skin" },
+      dry_skin:          { label: "Dry skin" },
+      sensitive_skin:    { label: "Sensitive skin" },
+      fragrance_allergy: { label: "Fragrance allergy" },
+      curly_coily_hair:  { label: "Curly / coily hair" },
+      color_treated:     { label: "Color-treated hair" },
+      pregnant_nursing:  { label: "Pregnant / nursing" }
+    };
+
+    /* =========================================================
+       INGREDIENT KNOWLEDGE BASE
+       Schema: id, inci_name, aliases[], kind (active|inactive),
+       function, definition, default_level, conditions[],
+       contested, contested_summary, sources[]
+       ========================================================= */
+    const INGREDIENTS = [
+      {
+        id: "aqua", inci_name: "Aqua", aliases: ["Water"], kind: "inactive",
+        function: "Solvent",
+        definition: "Plain water. The base for most personal-care formulas.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "glycerin", inci_name: "Glycerin", aliases: [], kind: "inactive",
+        function: "Humectant",
+        definition: "A naturally-derived humectant that pulls moisture from the air into the skin. Tolerated by virtually all skin types.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "hyaluronic_acid", inci_name: "Sodium Hyaluronate", aliases: ["Hyaluronic Acid"], kind: "inactive",
+        function: "Humectant",
+        definition: "The salt form of hyaluronic acid. Holds many times its weight in water; widely tolerated.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "niacinamide", inci_name: "Niacinamide", aliases: ["Vitamin B3"], kind: "inactive",
+        function: "Skin-conditioning",
+        definition: "Form of vitamin B3. Helps with redness, oil control, and barrier support. Safe across pregnancy and most sensitivities.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "citric_acid", inci_name: "Citric Acid", aliases: [], kind: "inactive",
+        function: "pH adjuster",
+        definition: "Used in tiny amounts to balance the pH of formulas. Not the same as the AHA exfoliating acid in skincare.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "zinc_oxide", inci_name: "Zinc Oxide", aliases: [], kind: "active",
+        function: "Mineral UV filter",
+        definition: "One of two FDA-recognized broadly safe sunscreen actives. Sits on top of skin and reflects UV. Generally well tolerated even on sensitive skin.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "cocos_nucifera_oil", inci_name: "Cocos Nucifera Oil", aliases: ["Coconut Oil"], kind: "inactive",
+        function: "Emollient / occlusive",
+        definition: "Oil pressed from coconut meat. Deeply moisturizing on dry skin and hair, but rated 4 out of 5 on the comedogenic scale.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["acne_prone", "oily_skin"],
+            level: "yellow",
+            concern: "comedogenic",
+            reason: "Rated 4/5 comedogenic — clogs pores and can trigger breakouts on acne-prone or already-oily skin."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "coconut_alkanes", inci_name: "Coconut Alkanes", aliases: [], kind: "inactive",
+        function: "Lightweight emollient / silicone alternative",
+        definition: "A hydrogenated coconut-oil derivative used as a dry-finish silicone alternative. Often appears in products labeled \"oil-free\" because it's technically a hydrocarbon, not an oil.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["acne_prone"],
+            level: "yellow",
+            concern: "comedogenic",
+            reason: "Multiple dermatology sources rate this 4–5/5 comedogenic; many acne-prone users report breakouts that cleared after removing it."
+          }
+        ],
+        contested: true,
+        contested_summary: "Dermatology and acne clinics treat coconut alkanes as comedogenic. Cosmetic chemists (notably Paula's Choice) argue the rating is non-substantiated and depends on the whole formula. Worth deciding based on your own skin's response.",
+        sources: [
+          { side: "con", name: "Aesthetix Dermatology" },
+          { side: "con", name: "CLEARSTEM Skincare" },
+          { side: "pro", name: "Paula's Choice ingredient dictionary" }
+        ]
+      },
+      {
+        id: "fragrance", inci_name: "Fragrance", aliases: ["Parfum", "Aroma"], kind: "inactive",
+        function: "Scent",
+        definition: "Catch-all term that can mean any combination of dozens of aroma chemicals or essential oils. Brands aren't required to disclose what's inside, and \"fragrance\" is a leading cause of cosmetic allergic contact dermatitis.",
+        default_level: "yellow",
+        conditions: [
+          {
+            matches_any: ["fragrance_allergy", "sensitive_skin"],
+            level: "red",
+            concern: "allergen",
+            reason: "Top sensitizer in personal care. If you've reacted to a fragranced product before, this is the most likely culprit."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "methylparaben", inci_name: "Methylparaben", aliases: [], kind: "inactive",
+        function: "Preservative",
+        definition: "A common preservative in the paraben family. Effective against mold and bacteria; some people prefer to avoid the class because of weak estrogen-mimicking effects in laboratory studies.",
+        default_level: "yellow",
+        conditions: [],
+        contested: true,
+        contested_summary: "Parabens are restricted in the EU above certain levels but considered safe at typical concentrations by the FDA. The endocrine-disruption concern is real in lab studies but contested at real-world exposures. Many people avoid the whole family as a precaution.",
+        sources: [
+          { side: "con", name: "EU Cosmetic Regulation 1223/2009 (restricted)" },
+          { side: "pro", name: "FDA — generally recognized as safe at use levels" }
+        ]
+      },
+      {
+        id: "quaternium_15", inci_name: "Quaternium-15", aliases: [], kind: "inactive",
+        function: "Preservative (formaldehyde-releaser)",
+        definition: "Releases small amounts of formaldehyde over time to preserve the product. A recognized contact allergen and one of the most common causes of preservative-related dermatitis.",
+        default_level: "red", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "sles", inci_name: "Sodium Laureth Sulfate", aliases: ["SLES"], kind: "inactive",
+        function: "Surfactant / cleanser",
+        definition: "A foaming detergent common in shampoos and body washes. Effective cleanser, gentler than its cousin sodium lauryl sulfate, but can strip natural oils on the wrong skin or hair.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["dry_skin", "sensitive_skin"],
+            level: "yellow",
+            concern: "drying",
+            reason: "Strong surfactant; strips natural lipids and can irritate already-dry or sensitive skin."
+          },
+          {
+            matches_any: ["color_treated"],
+            level: "yellow",
+            concern: "color stripping",
+            reason: "Fades color faster than gentler sulfate-free surfactants."
+          },
+          {
+            matches_any: ["curly_coily_hair"],
+            level: "yellow",
+            concern: "moisture stripping",
+            reason: "Curly and coily hair patterns are drier by structure; sulfates can leave them brittle."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "cocamidopropyl_betaine", inci_name: "Cocamidopropyl Betaine", aliases: [], kind: "inactive",
+        function: "Mild surfactant",
+        definition: "A gentle, coconut-derived surfactant often used to soften the effect of stronger detergents. Generally well tolerated.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["sensitive_skin"],
+            level: "yellow",
+            concern: "allergen",
+            reason: "Was named Allergen of the Year by the American Contact Dermatitis Society in 2004 — most reactions trace to manufacturing impurities, not the ingredient itself, but if your skin is reactive, worth knowing."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "dimethicone", inci_name: "Dimethicone", aliases: [], kind: "inactive",
+        function: "Silicone / smoothing agent",
+        definition: "A silicone that gives products a smooth, slippery finish. Widely tolerated on skin; a more divisive ingredient for hair, where it can build up over time.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["curly_coily_hair"],
+            level: "yellow",
+            concern: "build-up",
+            reason: "Coats the hair shaft and can build up without sulfate cleansing — leaves curls weighed down and dull over time."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "retinol", inci_name: "Retinol", aliases: [], kind: "inactive",
+        function: "Cell-turnover / anti-aging",
+        definition: "A vitamin A derivative that accelerates skin cell turnover. Effective for anti-aging and acne, but typically avoided during pregnancy due to systemic vitamin A risks.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["pregnant_nursing"],
+            level: "red",
+            concern: "pregnancy",
+            reason: "Topical retinoids are typically avoided during pregnancy due to vitamin A's known teratogenic effects in oral form. Major OB and dermatology guidelines recommend pausing."
+          },
+          {
+            matches_any: ["sensitive_skin"],
+            level: "yellow",
+            concern: "irritation",
+            reason: "Can cause peeling, redness, and stinging — especially on sensitive skin or when starting out."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "oxybenzone", inci_name: "Oxybenzone", aliases: ["Benzophenone-3"], kind: "active",
+        function: "Chemical UV filter",
+        definition: "A chemical sunscreen filter that absorbs UVB and short UVA. Banned in some reef destinations (Hawaii, Key West) for environmental reasons; flagged by some health groups for hormone-disruption concerns at high exposure.",
+        default_level: "yellow",
+        conditions: [
+          {
+            matches_any: ["pregnant_nursing"],
+            level: "red",
+            concern: "endocrine concern",
+            reason: "Some studies have detected oxybenzone in maternal blood and breast milk. Major health authorities still consider it safe at typical use, but many providers recommend mineral filters during pregnancy out of caution."
+          }
+        ],
+        contested: true,
+        contested_summary: "FDA still considers oxybenzone a permitted active. EU has restricted concentrations. Environmental groups and some health authorities recommend avoiding it; cosmetic chemistry voices argue typical exposures are well within safe limits.",
+        sources: [
+          { side: "con", name: "Environmental Working Group" },
+          { side: "con", name: "Hawaii SB2571 (reef ban)" },
+          { side: "pro", name: "FDA Sunscreen Monograph" }
+        ]
+      },
+      {
+        id: "shea_butter", inci_name: "Butyrospermum Parkii Butter", aliases: ["Shea Butter"], kind: "inactive",
+        function: "Emollient",
+        definition: "Fat extracted from the nut of the shea tree. Rich, deeply moisturizing, low comedogenic rating. Generally tolerated by most skin types.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "squalane", inci_name: "Squalane", aliases: [], kind: "inactive",
+        function: "Lightweight emollient",
+        definition: "A stable, hydrogenated form of squalene (often plant-derived now). Mimics skin's own oils, non-comedogenic, suitable across skin types.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "panthenol", inci_name: "Panthenol", aliases: ["Pro-Vitamin B5"], kind: "inactive",
+        function: "Conditioning agent",
+        definition: "A B-vitamin derivative that hydrates and supports the skin barrier. Common in gentle skin and hair products; broadly tolerated.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "behentrimonium_chloride", inci_name: "Behentrimonium Chloride", aliases: [], kind: "inactive",
+        function: "Conditioning agent",
+        definition: "A conditioner used in hair products to reduce static and ease detangling. Generally well tolerated; a gentler alternative to older quat conditioners.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "coco_betaine", inci_name: "Coco-Betaine", aliases: [], kind: "inactive",
+        function: "Mild surfactant",
+        definition: "An amphoteric surfactant derived from coconut oil. Closely related to cocamidopropyl betaine; used to soften the action of stronger detergents like sulfates.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "glycol_distearate", inci_name: "Glycol Distearate", aliases: [], kind: "inactive",
+        function: "Pearlizing agent",
+        definition: "A wax-like ingredient that gives shampoos and conditioners their pearlescent, opaque look. Cosmetically inert.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "sodium_chloride", inci_name: "Sodium Chloride", aliases: ["Salt"], kind: "inactive",
+        function: "Viscosity adjuster",
+        definition: "Plain table salt. Used in shampoo to thicken the formula. Can strip keratin treatments and may speed color fade over repeated use.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["color_treated"],
+            level: "yellow",
+            concern: "treatment stripping",
+            reason: "Salt can fade color and break down keratin smoothing treatments — gentler shampoos avoid it for that reason."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "ppg_5_ceteth_20", inci_name: "PPG-5-Ceteth-20", aliases: [], kind: "inactive",
+        function: "Solubilizer",
+        definition: "A polyethylene glycol derivative that helps oil-soluble fragrance ingredients dissolve into water-based formulas. Considered safe at use levels by major regulators.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "sodium_benzoate", inci_name: "Sodium Benzoate", aliases: [], kind: "inactive",
+        function: "Preservative",
+        definition: "A widely used food and cosmetic preservative. FDA-recognized as generally safe. Notable mostly for one quirk: combined with vitamin C under heat, it can form trace benzene — relevant for some skincare, much less for shampoo.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "sodium_hydroxide", inci_name: "Sodium Hydroxide", aliases: ["Lye"], kind: "inactive",
+        function: "pH adjuster",
+        definition: "Used in trace amounts to balance the formula's pH. Highly caustic on its own but completely neutralized in finished products.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "polyquaternium_10", inci_name: "Polyquaternium-10", aliases: [], kind: "inactive",
+        function: "Hair conditioning polymer",
+        definition: "A cationic conditioner derived from cellulose. Coats the hair shaft to reduce static and improve manageability. Can build up over time without periodic clarifying.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["curly_coily_hair"],
+            level: "yellow",
+            concern: "build-up",
+            reason: "Conditioning polymers can accumulate on textured hair patterns without occasional clarifying — leaves curls limp or coated over time."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "carbomer", inci_name: "Carbomer", aliases: [], kind: "inactive",
+        function: "Thickener",
+        definition: "An inert polymer used to give gels and creams their texture. Cosmetically inactive and well tolerated.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "salicylic_acid", inci_name: "Salicylic Acid", aliases: [], kind: "active",
+        function: "Beta hydroxy acid (BHA) / scalp exfoliant",
+        definition: "A beta hydroxy acid. In shampoo it acts as a scalp exfoliant — helps with dandruff and excess oil. In skincare it's used at higher concentrations for acne treatment.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["pregnant_nursing"],
+            level: "yellow",
+            concern: "pregnancy",
+            reason: "Topical salicylic acid at low rinse-off concentrations is generally considered fine in pregnancy. Higher-concentration leave-on uses are typically avoided. Worth checking with your provider if uncertain."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "benzyl_salicylate", inci_name: "Benzyl Salicylate", aliases: [], kind: "inactive",
+        function: "Fragrance ingredient",
+        definition: "A fragrance component with a soft floral note. Listed individually under EU regulations because it's one of the declared fragrance allergens.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["fragrance_allergy", "sensitive_skin"],
+            level: "yellow",
+            concern: "fragrance allergen",
+            reason: "EU-declared fragrance allergen — reportable because a meaningful share of fragrance-sensitized people react to it specifically."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "limonene", inci_name: "Limonene", aliases: [], kind: "inactive",
+        function: "Fragrance ingredient",
+        definition: "A citrus-scented terpene found in many essential oils. One of the most common EU-declared fragrance allergens; oxidizes over time, which makes it more sensitizing in older product.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["fragrance_allergy", "sensitive_skin"],
+            level: "yellow",
+            concern: "fragrance allergen",
+            reason: "EU-declared fragrance allergen. Among the most frequent positive patch-test reactions in fragrance-allergic patients."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "benzyl_alcohol", inci_name: "Benzyl Alcohol", aliases: [], kind: "inactive",
+        function: "Preservative / fragrance ingredient",
+        definition: "Functions as both a preservative and a fragrance ingredient. Naturally occurs in some essential oils. EU-declared fragrance allergen.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["fragrance_allergy", "sensitive_skin"],
+            level: "yellow",
+            concern: "fragrance allergen",
+            reason: "EU-declared fragrance allergen; reactions are well-documented in patch testing."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "linalool", inci_name: "Linalool", aliases: [], kind: "inactive",
+        function: "Fragrance ingredient",
+        definition: "A floral-scented terpene found in lavender and many other plants. EU-declared fragrance allergen, especially after oxidation.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["fragrance_allergy", "sensitive_skin"],
+            level: "yellow",
+            concern: "fragrance allergen",
+            reason: "EU-declared fragrance allergen. Oxidized linalool is a notably common cause of patch-test positive reactions."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "citral", inci_name: "Citral", aliases: [], kind: "inactive",
+        function: "Fragrance ingredient",
+        definition: "A lemon-scented aldehyde found in lemongrass and citrus oils. EU-declared fragrance allergen.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["fragrance_allergy", "sensitive_skin"],
+            level: "yellow",
+            concern: "fragrance allergen",
+            reason: "EU-declared fragrance allergen with documented sensitization risk."
+          }
+        ],
+        contested: false, sources: []
+      },
+      {
+        id: "charcoal_powder", inci_name: "Charcoal Powder", aliases: ["Activated Charcoal", "Carbon"], kind: "inactive",
+        function: "Adsorbent (claimed)",
+        definition: "Activated carbon, marketed as drawing oil and impurities from hair or skin. Inert and considered safe; the actual evidence for the marketing claims in rinse-off products is weak.",
+        default_level: "green",
+        conditions: [
+          {
+            matches_any: ["dry_skin", "curly_coily_hair"],
+            level: "yellow",
+            concern: "drying",
+            reason: "If charcoal is doing what marketing says (adsorbing oils), it's not selective — strips good oils too. Worth watching for over-drying with repeated use on already-dry hair or skin."
+          }
+        ],
+        contested: true,
+        contested_summary: "Activated charcoal is safe and inert. The dispute isn't about safety — it's about whether it actually works in rinse-off products. Marketers claim adsorption of oils and impurities; cosmetic chemists point out that contact time is too short and concentration too low for meaningful effect. Many users report it helps, but the cleansing effect of the sulfate surfactants in the same formula could be the real mechanism.",
+        sources: [
+          { side: "con", name: "Cosmetic chemistry consensus (LabMuffin, The Beauty Brains)" },
+          { side: "pro", name: "User experience reports of extended freshness between washes" }
+        ]
+      },
+      {
+        id: "polyglycerin_10", inci_name: "Polyglycerin-10", aliases: [], kind: "inactive",
+        function: "Humectant / emollient",
+        definition: "A plant-derived humectant in the polyglycerol family. Mild, well-tolerated, used as a gentler alternative to PEGs.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "polyglyceryl_10_myristate", inci_name: "Polyglyceryl-10 Myristate", aliases: [], kind: "inactive",
+        function: "Mild emulsifier",
+        definition: "A coconut/palm-derived nonionic emulsifier in the polyglyceryl family. Often appears in 'clean beauty' formulas as a gentler alternative to traditional emulsifiers.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "polyglyceryl_10_stearate", inci_name: "Polyglyceryl-10 Stearate", aliases: [], kind: "inactive",
+        function: "Mild emulsifier",
+        definition: "Sister ingredient to polyglyceryl-10 myristate. Nonionic emulsifier from the polyglyceryl family. Gentle and well tolerated.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      },
+      {
+        id: "sodium_dehydroacetate", inci_name: "Sodium Dehydroacetate", aliases: [], kind: "inactive",
+        function: "Preservative",
+        definition: "A broad-spectrum preservative considered safe at standard cosmetic use levels by major regulators.",
+        default_level: "green", conditions: [], contested: false, sources: []
+      }
+    ];
+
+    /* =========================================================
+       PRODUCT DB — same schema as your real app, plus an
+       intentionally unknown ingredient to demo that flow.
+       ========================================================= */
+    const PRODUCTS = [
+      {
+        upc: "012345678905",
+        name: "HydraShine Shampoo",
+        brand: "Riverglow",
+        category: "Hair Care",
+        ingredients_raw: [
+          "Aqua (Water)", "Sodium Laureth Sulfate", "Cocamidopropyl Betaine",
+          "Parfum (Fragrance)", "Methylparaben", "Citric Acid"
+        ],
+        notices: [
+          { type: "recall", status: "past", date: "2022-07-15",
+            title: "Batch recall due to contamination risk",
+            source: "https://example.org/recall-hydrashine-2022" }
+        ],
+        lawsuits: [
+          { status: "settled", date: "2023-03-09",
+            title: "Labeling dispute over 'natural' marketing claim",
+            source: "https://example.org/case-23-0399" }
+        ]
+      },
+      {
+        upc: "036000291452",
+        name: "Daily Calm Face Moisturizer SPF 30",
+        brand: "Everdew",
+        category: "Skin Care",
+        ingredients_raw: [
+          "Aqua (Water)", "Glycerin", "Zinc Oxide", "Oxybenzone",
+          "Dimethicone", "Sodium Hyaluronate", "Niacinamide", "Methylparaben"
+        ],
+        notices: [],
+        lawsuits: []
+      },
+      {
+        upc: "490000567890",
+        name: "SilkGuard Heat Serum",
+        brand: "ThermaLux",
+        category: "Hair Styling",
+        ingredients_raw: [
+          "Dimethicone", "Quaternium-15", "Fragrance",
+          "Polyglyceryl-3 Methylglucose Distearate"
+        ],
+        notices: [],
+        lawsuits: [
+          { status: "filed", date: "2024-10-21",
+            title: "Formaldehyde-releaser disclosure allegation",
+            source: "https://example.org/case-24-1031" }
+        ]
+      },
+      {
+        upc: "9501101530003",
+        name: "PureBloom Night Cream",
+        brand: "Bloomery",
+        category: "Skin Care",
+        ingredients_raw: [
+          "Aqua (Water)", "Squalane", "Butyrospermum Parkii Butter",
+          "Niacinamide", "Sodium Hyaluronate", "Panthenol", "Retinol"
+        ],
+        notices: [],
+        lawsuits: []
+      },
+      {
+        upc: "770000010003",
+        name: "Tropical Glow Body Butter",
+        brand: "Riverglow",
+        category: "Body Care",
+        ingredients_raw: [
+          "Cocos Nucifera Oil", "Butyrospermum Parkii Butter",
+          "Squalane", "Glycerin", "Fragrance"
+        ],
+        notices: [],
+        lawsuits: []
+      },
+      {
+        upc: "770000010099",
+        name: "Cloud Touch Tinted Moisturizer (Oil-Free)",
+        brand: "Bloomery",
+        category: "Skin Care",
+        ingredients_raw: [
+          "Aqua (Water)", "Coconut Alkanes", "Glycerin",
+          "Zinc Oxide", "Niacinamide", "Sodium Hyaluronate"
+        ],
+        notices: [],
+        lawsuits: []
+      },
+      {
+        upc: "603084286331",
+        name: "Garnier Fructis Pure Clean Hair Reset Rebalancing Shampoo with Charcoal",
+        brand: "Garnier",
+        category: "Hair Care",
+        ingredients_raw: [
+          "Aqua (Water)", "Sodium Laureth Sulfate", "Coco-Betaine", "Glycerin",
+          "Glycol Distearate", "Sodium Chloride", "Parfum (Fragrance)", "Citric Acid",
+          "PPG-5-Ceteth-20", "Sodium Benzoate", "Sodium Hydroxide", "Polyquaternium-10",
+          "Carbomer", "Salicylic Acid", "Benzyl Salicylate", "Limonene",
+          "Benzyl Alcohol", "Linalool", "Citral", "Charcoal Powder",
+          "Polyglycerin-10", "Polyglyceryl-10 Myristate", "Polyglyceryl-10 Stearate",
+          "Sodium Dehydroacetate"
+        ],
+        notices: [],
+        lawsuits: []
+      }
+    ];
+
+    /* =========================================================
+       STATE
+       ========================================================= */
+    const state = {
+      activeFilters: new Set(),
+      selectedProduct: null,
+      expandedIngredient: null  // index into the resolved ingredient list
+    };
+
+    /* =========================================================
+       INGREDIENT MATCHING + LEVEL EVALUATION
+       ========================================================= */
+    function normalize(s) {
+      return s.toLowerCase()
+        .replace(/\s*\(.*?\)\s*/g, " ")  // strip parenthetical alternates
+        .replace(/[^a-z0-9\- ]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function lookupIngredient(rawText) {
+      const norm = normalize(rawText);
+      for (const ing of INGREDIENTS) {
+        const candidates = [ing.inci_name, ...(ing.aliases || [])].map(normalize);
+        if (candidates.includes(norm)) return ing;
+      }
+      return null;
+    }
+
+    function evaluateLevel(ingredient, activeFilters) {
+      // Walk through conditions; pick the strictest match.
+      const order = { green: 0, yellow: 1, red: 2 };
+      let level = ingredient.default_level || "green";
+      let triggered = null;
+
+      for (const cond of ingredient.conditions || []) {
+        const matches = (cond.matches_any || []).some(p => activeFilters.has(p));
+        if (matches && order[cond.level] > order[level]) {
+          level = cond.level;
+          triggered = cond;
+        }
+      }
+      return { level, triggered };
+    }
+
+    function resolveProduct(product, activeFilters) {
+      const resolved = product.ingredients_raw.map(raw => {
+        const ing = lookupIngredient(raw);
+        if (!ing) return { unknown: true, raw };
+        const { level, triggered } = evaluateLevel(ing, activeFilters);
+        return { unknown: false, raw, ingredient: ing, level, triggered };
+      });
+      return resolved;
+    }
+
+    function computeRisk(resolved) {
+      let hasRed = false, hasYellow = false;
+      for (const r of resolved) {
+        if (r.unknown) continue;
+        if (r.level === "red") hasRed = true;
+        if (r.level === "yellow") hasYellow = true;
+      }
+      if (hasRed) return { label: "High", cls: "high" };
+      if (hasYellow) return { label: "Moderate", cls: "moderate" };
+      return { label: "Low", cls: "low" };
+    }
+
+    /* =========================================================
+       RENDER
+       ========================================================= */
+    const $ = sel => document.querySelector(sel);
+    const resultEl = $("#result");
+
+    function renderFilters() {
+      const wrap = $("#filterChips");
+      wrap.innerHTML = "";
+      Object.entries(PROFILES).forEach(([id, p]) => {
+        const btn = document.createElement("button");
+        btn.className = "chip" + (state.activeFilters.has(id) ? " on" : "");
+        btn.textContent = p.label;
+        btn.addEventListener("click", () => {
+          if (state.activeFilters.has(id)) state.activeFilters.delete(id);
+          else state.activeFilters.add(id);
+          renderFilters();
+          if (state.selectedProduct) renderProduct(state.selectedProduct);
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
+    function renderEmpty() {
+      resultEl.innerHTML = `
+        <div class="empty">
+          <div>Search a product above to see ingredients, flags, and notices.</div>
+          <div class="hint">Try: "HydraShine", "Cloud Touch", "Tropical Glow"…</div>
+        </div>`;
+      state.selectedProduct = null;
+    }
+
+    function escape(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+      }[c]));
+    }
+
+    function renderProduct(product) {
+      // Only reset the expanded ingredient when the user navigates to a
+      // different product — preserving it across filter toggles and pill clicks.
+      if (state.selectedProduct !== product) {
+        state.expandedIngredient = null;
+      }
+      state.selectedProduct = product;
+      const resolved = resolveProduct(product, state.activeFilters);
+      const risk = computeRisk(resolved);
+
+      const actives = [];
+      const inactives = [];
+      const unknowns = [];
+      resolved.forEach((r, idx) => {
+        if (r.unknown) { unknowns.push({ ...r, idx }); return; }
+        if (r.ingredient.kind === "active") actives.push({ ...r, idx });
+        else inactives.push({ ...r, idx });
+      });
+
+      const filterCount = state.activeFilters.size;
+      const ctxLine = filterCount === 0
+        ? "Based on default safety only"
+        : `Based on ${filterCount} filter${filterCount > 1 ? "s" : ""} you set`;
+
+      resultEl.innerHTML = `
+        <div class="product">
+          <div class="product-header">
+            <div>
+              <h2>${escape(product.name)}</h2>
+              <div class="meta">
+                ${escape(product.brand)} <span class="dot">•</span>
+                ${escape(product.category)} <span class="dot">•</span>
+                UPC ${escape(product.upc)}
+              </div>
+            </div>
+            <div class="risk-badge ${risk.cls}">
+              <span class="label">Overall</span>
+              <span class="value">${risk.label}</span>
+              <span class="ctx">${ctxLine}</span>
+            </div>
+          </div>
+
+          ${renderIngredientSection("Active ingredients", actives, true)}
+          ${renderIngredientSection("Inactive ingredients", inactives, false)}
+          ${unknowns.length ? renderUnknownBlock(unknowns, product) : ""}
+
+          <details class="collapsible" ${product.notices.length ? "" : ""}>
+            <summary>
+              <span class="left">Recalls &amp; notices <span class="count">${product.notices.length}</span></span>
+              <span class="chev">▾</span>
+            </summary>
+            <div class="body">${renderNotices(product.notices, "notice")}</div>
+          </details>
+
+          <details class="collapsible">
+            <summary>
+              <span class="left">Lawsuits <span class="count">${product.lawsuits.length}</span></span>
+              <span class="chev">▾</span>
+            </summary>
+            <div class="body">${renderNotices(product.lawsuits, "lawsuit")}</div>
+          </details>
+        </div>
+      `;
+
+      // Attach pill click handlers
+      resultEl.querySelectorAll(".pill[data-idx]").forEach(p => {
+        p.addEventListener("click", () => {
+          const idx = parseInt(p.dataset.idx, 10);
+          state.expandedIngredient = state.expandedIngredient === idx ? null : idx;
+          renderProduct(product);
+        });
+      });
+
+      // Attach "request" button if present
+      const reqBtn = resultEl.querySelector("#requestBtn");
+      if (reqBtn) reqBtn.addEventListener("click", () => openRequestModal(unknowns, product));
+    }
+
+    function renderIngredientSection(title, items, isActive) {
+      if (items.length === 0 && isActive) {
+        return `
+          <div class="section">
+            <div class="section-title">${title} <span class="count">0</span></div>
+            <div class="none">No FDA-recognized active ingredients — this is a non-drug cosmetic.</div>
+          </div>`;
+      }
+      if (items.length === 0) return "";
+
+      const pills = items.map(it => renderPill(it)).join("");
+      const expandedDetail = items
+        .filter(it => it.idx === state.expandedIngredient)
+        .map(it => renderDetail(it))
+        .join("");
+
+      return `
+        <div class="section">
+          <div class="section-title">${title} <span class="count">${items.length}</span></div>
+          <div class="pills">${pills}</div>
+          ${expandedDetail}
+        </div>`;
+    }
+
+    function renderPill(item) {
+      const ing = item.ingredient;
+      const expanded = state.expandedIngredient === item.idx ? " expanded" : "";
+      const contestedMark = ing.contested
+        ? `<span class="contested-mark" title="Sources disagree on this ingredient">disputed</span>`
+        : "";
+      return `
+        <button class="pill ${item.level}${expanded}" data-idx="${item.idx}">
+          <span class="dot"></span>
+          ${escape(ing.inci_name)}
+          ${contestedMark}
+        </button>`;
+    }
+
+    function renderDetail(item) {
+      const ing = item.ingredient;
+      const aliases = ing.aliases && ing.aliases.length
+        ? `<div class="alias">also known as ${ing.aliases.map(escape).join(", ")}</div>`
+        : "";
+
+      let why = "";
+      if (item.triggered) {
+        const matchedFilters = item.triggered.matches_any
+          .filter(f => state.activeFilters.has(f))
+          .map(f => PROFILES[f]?.label || f);
+        why = `
+          <div class="why ${item.level === "red" ? "red" : ""}">
+            <span class="why-label">Flagged because: ${escape(matchedFilters.join(", "))}</span>
+            ${escape(item.triggered.reason)}
+          </div>`;
+      }
+
+      let contested = "";
+      if (ing.contested) {
+        contested = `
+          <div class="contested">
+            <span class="contested-label">Experts disagree</span>
+            ${escape(ing.contested_summary)}
+          </div>`;
+      }
+
+      let sources = "";
+      if (ing.sources && ing.sources.length) {
+        sources = `
+          <div class="sources">
+            <strong>Sources:</strong>
+            ${ing.sources.map(s => `
+              <div class="source-row">
+                ${s.side ? `<span class="side ${s.side}">${s.side === "con" ? "concern" : "reassurance"}</span>` : ""}
+                ${escape(s.name)}
+              </div>
+            `).join("")}
+          </div>`;
+      }
+
+      return `
+        <div class="detail">
+          <h4>${escape(ing.inci_name)}</h4>
+          ${aliases}
+          <span class="function">${escape(ing.function)}</span>
+          <p class="definition">${escape(ing.definition)}</p>
+          ${why}
+          ${contested}
+          ${sources}
+          <div class="micro-disclaimer">
+            Informational only — based on regulatory records and dermatology consensus.
+            If you've reacted to a product personally, your direct experience overrides any of this.
+            Consult a doctor or dermatologist for symptoms or sensitivities.
+          </div>
+        </div>`;
+    }
+
+    function renderUnknownBlock(unknowns, product) {
+      const list = unknowns.map(u => `<li>${escape(u.raw)}</li>`).join("");
+      return `
+        <div class="section">
+          <div class="section-title">Not yet in our database <span class="count">${unknowns.length}</span></div>
+          <div class="pills">
+            ${unknowns.map(u => `
+              <span class="pill unknown" title="We don't have info on this yet">
+                <span class="dot"></span>${escape(u.raw)}
+              </span>
+            `).join("")}
+          </div>
+          <div class="unknown-cta">
+            <div class="text">
+              <strong>${unknowns.length}</strong> ingredient${unknowns.length > 1 ? "s aren't" : " isn't"} in our database yet.
+              Help us fill the gap?
+            </div>
+            <button id="requestBtn">Request additions</button>
+          </div>
+        </div>`;
+    }
+
+    function renderNotices(arr, kind) {
+      if (!arr.length) return `<div class="none">None recorded for this product.</div>`;
+      return arr.map(n => `
+        <div class="notice-row">
+          <div class="head">
+            <div>
+              <span class="type">${escape((n.type || (kind === "lawsuit" ? "case" : "notice")).toUpperCase())}</span>
+              <span class="title">${escape(n.title || "")}</span>
+            </div>
+            ${n.source ? `<a href="${escape(n.source)}" target="_blank" rel="noopener">View source ↗</a>` : ""}
+          </div>
+          <div class="when">${escape(n.status || "")}${n.status && n.date ? " • " : ""}${escape(n.date || "")}</div>
+        </div>
+      `).join("");
+    }
+
+    /* =========================================================
+       SEARCH
+       ========================================================= */
+    const searchInput = $("#searchInput");
+    const searchResultsEl = $("#searchResults");
+
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) { searchResultsEl.style.display = "none"; return; }
+
+      const matches = PRODUCTS.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.brand.toLowerCase().includes(q) ||
+        p.upc.includes(q) ||
+        p.category.toLowerCase().includes(q)
+      ).slice(0, 6);
+
+      if (!matches.length) {
+        searchResultsEl.innerHTML = `<div class="item" style="cursor:default; color: var(--muted);">No products found</div>`;
+        searchResultsEl.style.display = "block";
+        return;
+      }
+      searchResultsEl.innerHTML = matches.map(m => `
+        <div class="item" data-upc="${escape(m.upc)}">
+          <div class="name">${escape(m.name)}</div>
+          <div class="meta">${escape(m.brand)} • ${escape(m.category)} • UPC ${escape(m.upc)}</div>
+        </div>
+      `).join("");
+      searchResultsEl.style.display = "block";
+
+      searchResultsEl.querySelectorAll(".item[data-upc]").forEach(el => {
+        el.addEventListener("click", () => {
+          const product = PRODUCTS.find(p => p.upc === el.dataset.upc);
+          if (product) {
+            renderProduct(product);
+            searchInput.value = "";
+            searchResultsEl.style.display = "none";
+          }
+        });
+      });
+    });
+
+    document.addEventListener("click", e => {
+      if (!e.target.closest(".search")) searchResultsEl.style.display = "none";
+    });
+
+    /* =========================================================
+       REQUEST MODAL (demo only — would link to Tally form in prod)
+       ========================================================= */
+    function openRequestModal(unknowns, product) {
+      const bg = document.createElement("div");
+      bg.className = "modal-bg";
+      bg.innerHTML = `
+        <div class="modal" role="dialog" aria-modal="true">
+          <h3>Request these be added</h3>
+          <p>In the real app, this opens a short form (no account, no login). For this preview we'll just show what'd get pre-filled:</p>
+          <ul>
+            ${unknowns.map(u => `<li>${escape(u.raw)}</li>`).join("")}
+          </ul>
+          <p style="font-size: .9rem; color: var(--muted);">
+            Plus: product ${escape(product.name)} (UPC ${escape(product.upc)}) for context.
+          </p>
+          <div class="actions">
+            <button id="modalClose">Close</button>
+            <button class="primary" id="modalSend">Submit (demo)</button>
+          </div>
+        </div>`;
+      document.body.appendChild(bg);
+      bg.addEventListener("click", e => { if (e.target === bg) bg.remove(); });
+      bg.querySelector("#modalClose").addEventListener("click", () => bg.remove());
+      bg.querySelector("#modalSend").addEventListener("click", () => {
+        bg.querySelector(".modal").innerHTML = `
+          <h3>Thanks — got it.</h3>
+          <p>The developer reviews submissions and adds them to the database. Until then, the ingredient stays gray for everyone.</p>
+          <div class="actions"><button class="primary" id="modalDone">Done</button></div>`;
+        bg.querySelector("#modalDone").addEventListener("click", () => bg.remove());
+      });
+    }
+
+    /* =========================================================
+       BOOT
+       ========================================================= */
+    renderFilters();
+    renderEmpty();
+  </script>
+</body>
+</html>
